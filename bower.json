@@ -1,0 +1,20 @@
+{
+  "name": "marvel",
+  "version": "0.0.1",
+  "description": "Homework 15 Module 6",
+  "authors": [
+    "Igor Sergiienko"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/js/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.5"
+  }
+}
