@@ -17,6 +17,7 @@
   "dependencies": {
     "angular": "~1.5.5",
     "d3": "~3.5.17",
-    "js-md5": "md5#~0.4.1"
+    "angular-md5": "~0.1.10",
+    "angular-ui-router": "~0.3.0"
   }
 }
