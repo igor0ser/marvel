@@ -25,8 +25,8 @@
 			return $http.get(URL_CHARS + '?name=' + name + '&' + getAuth());
 		};
 
-		_this.getComicsByCharId = function(id){
-			return $http.get(URL_COMICS + '?limit=50&characters=' + id + '&' + getAuth());
+		_this.getSeriesByCharId = function(id){
+			return $http.get(URL_CHARS + '/' + id + '/series' + '?' + getAuth() +'&limit=40');
 		};
 
 		_this.getNRandomCharacters = function(n, callback){
@@ -55,40 +55,64 @@
 		};
 
 		_this.getTree = function(name, callback){
-			var tree = {
-				name: '',
-				children: []
-			};
 			_this.getCharacterByName(name)
 				.then(function(responce){
-					console.log(responce.data.data.results[0]);
 					var char = responce.data.data.results[0];
 					if (!char) {
 						callback("No character with such name.");
 						return;
 					}
+					console.log(char.id);
 
-					_this.getComicsByCharId(char.id)
+					_this.getSeriesByCharId(char.id)
 						.then(function(responce){
-							var comics = responce.data.data.results;
-							console.log(comics);
+							var series = responce.data.data.results;
+							console.log(series);
 
-							if (!comics.length) {
-								callback("This character has zero comics.");
+							if (!series.length) {
+								callback("This character has zero series.");
 								return;
 							}
 
-							for (var i = 0; i < comics.length; i++) {
+							var tree = {
+								name: name,
+								children: []
+							};
+
+							for (var i = 0; i < series.length; i++) {
 								tree.children.push({
-									name: comics[i].title
+									name: series[i].title,
+									children: []
 								});
+
+								var creators = series[i].creators.items;
+
+								for (var j = 0; j < creators.length; j++) {
+									tree.children[i].children.push({
+										name: creators[j].name
+									});
+								}
 							}
 
-							tree.name = name;
 							callback(tree);
 						});
 				});
 		};
 
 	});
+
+
+	app.service('loading', function(){
+		var loadingWindow = document.getElementById('loading');
+		this.hide = function(){
+			loadingWindow.style.display = 'none';
+		};
+
+		this.show = function(){
+			loadingWindow.style.display = 'block';
+		};
+	});
 })();
+
+
+var spidy = "1009610";
