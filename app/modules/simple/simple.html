@@ -1,4 +1,14 @@
 <div class="simple-char">
 	<h2>10 random comic characters</h2>
-	<svg id="simple-chart" width="800" height="500"></svg>
+	<svg id="simple-chart" width="610" height="500"></svg>
+
+	<div class="button-wrap">
+		<button class="btn" ng-click="$ctrl.getData()">Get Another 10 Characters</button>
+		<label>
+			Choose
+			<select ng-change="$ctrl.changeColors()" ng-model="$ctrl.currentColorScale">
+				<option ng-repeat="colorscale in $ctrl.colorscales" value="{{$index}}">{{colorscale.name}}</option>
+			</select>
+		</label>
+	</div>
 </div>

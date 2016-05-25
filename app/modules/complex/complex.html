@@ -1,1 +1,12 @@
-<h3>complex chart will be here</h3>
+<div class="complex-chart">
+	<h2>Hierarchy charachter links</h2>
+	<div class="button-wrap">
+		<form ng-submit="$ctrl.getTree()">
+			<input type="text" ng-model="$ctrl.name" required class="input-name">
+			<button class="btn">Get data</button>
+		</form>
+	</div>
+
+	<svg id="complex-chart" width="610" height="500"></svg>
+
+</div>
