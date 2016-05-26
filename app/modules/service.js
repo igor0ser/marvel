@@ -32,7 +32,6 @@
 		_this.getNRandomCharacters = function(n, callback){
 			var promises = [];
 			var randomId;
-			console.log(1);
 
 			for (var i = 0; i < n; i++) {
 				randomId = marvelValidIds[Math.round(Math.random() * marvelValidIds.length)];
@@ -46,9 +45,7 @@
 						var res = responces[i].data.data.results[0];
 						if (res){
 							chars.push(res);
-						} else {
-							console.log('some error happened');
-						}
+						} 
 					}
 					callback(chars);
 			});
@@ -62,12 +59,10 @@
 						callback("No character with such name.");
 						return;
 					}
-					console.log(char.id);
 
 					_this.getSeriesByCharId(char.id)
 						.then(function(responce){
 							var series = responce.data.data.results;
-							console.log(series);
 
 							if (!series.length) {
 								callback("This character has zero series.");

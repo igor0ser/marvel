@@ -8,10 +8,10 @@
 		templateUrl: '/modules/simple/simple.html'
 	});
 
-	app.controller('SimpleChartController', function(marvel){
+	app.controller('SimpleChartController', function(marvel, loading){
 		var $ctrl = this;
 
-		var data = getMockChars();
+		var data;
 
 		var chart = d3.select('#simple-chart');
 		var chartH = 500;
@@ -101,114 +101,16 @@
 		};
 
 		$ctrl.getData = function(){
+			loading.show();
 			marvel.getNRandomCharacters(10, (chars) => {
 				data = chars;
 				createChart();
 				$ctrl.changeColors();
-				console.log();
+				loading.hide();
 			});
 		};
 
-		createChart();
-		$ctrl.changeColors();
-
+		$ctrl.getData();
 	});
 
 })();
-
-
-
-
-function getMockChars(){
-	return [{
-			name: 'Spider-man',
-			comics: { 
-				available: 200
-			},
-			thumbnail:{
-				path: 'img/chars/spidy',
-				extension: 'jpg'
-			}
-			},{
-				name: 'Captain America',
-				comics: { 
-					available: 300
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Black Panther',
-				comics: { 
-					available: 50
-				},
-				thumbnail:{
-					path: 'img/chars/panther',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Widow',
-				comics: { 
-					available: 60
-				},
-				thumbnail:{
-					path: 'img/chars/widow',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Charles Xavier',
-				comics: { 
-					available: 10
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Clint Barton',
-				comics: { 
-					available: 25
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Contessa',
-				comics: { 
-					available: 81
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Corsair',
-				comics: { 
-					available: 5,
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Smasher',
-				comics: { 
-					available: 50
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-			},{
-				name: 'Spectrum',
-				comics: { 
-					available: 20
-				},
-				thumbnail:{
-					path: 'img/chars/cap',
-					extension: 'jpg'
-				}
-		},];
-}

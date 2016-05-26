@@ -11,9 +11,10 @@
 	app.controller('ComplexChartController', function(marvel, loading){
 		var $ctrl = this;
 
-		$ctrl.name = "Spider-man";
+		$ctrl.name = "Captain America";
 		var chart = d3.select('#complex-chart');
-		var treeObj;
+		var btnLayouts = document.querySelectorAll('.button-layouts .btn');
+		var dataObj;
 		$ctrl.chartType = 'radial';
 		var drawChart = {
 			linear: drawLinearLayout,
@@ -21,69 +22,65 @@
 		};
 
 		$ctrl.draw = function(chartType){
+			for (var i = 0; i < btnLayouts.length; i++) {
+				btnLayouts[i].classList.remove('active');
+			}
+			document.getElementById(chartType).classList.add('active');
 			$ctrl.chartType = chartType;
-			drawChart[chartType]();
 
-			angular.element('.button-layouts .btn').removeClass('active');
-			angular.element('#' + chartType).addClass('active');
+			if ( typeof dataObj === 'string') return;
+
+			drawChart[$ctrl.chartType](dataObj);
 		};
 
-		$ctrl.getTree = function(){
+		$ctrl.getData = function(){
 			loading.show();
-			marvel.getTree($ctrl.name, function(tree){
-				if ( typeof tree === 'string') {
-					console.log('string');
-					console.log(tree);
-					return;
+			marvel.getTree($ctrl.name, function(data){
+				dataObj = data;
+				if ( typeof data === 'string') {
+					drawText(data);
 				} else {
-					console.log('success');
-					console.log(tree);
-
-/*					var cluster =d3.select('#complex-chart')
-								.chart("cluster.cartesian")
-
-					              .margin({ top: 20, right: 180, bottom: 20, left: 40 })
-					              .radius("_COUNT_")
-					              .levelGap(200)
-					              .sortable("_DESC_")
-					              //.zoomable([0.1, 3])
-					              .collapsible(1)
-					              //.duration(200)
-					              ;
-
-					          cluster.draw(tree);*/
-					treeObj = tree;
-					
-					drawRadialLayout();
-					loading.hide();
+					drawChart[$ctrl.chartType](data);
 				}
+				loading.hide();
 			});
 
 		};
 
-		function drawRadialLayout(){
+		function drawRadialLayout(data){
 			chart.selectAll('*').remove();
 			var cluster = chart.chart("cluster.radial")
 				.radius(function(d) { if( d.size ) return Math.log(d.size); else return 3; })
 				.levelGap(200)
-				.zoomable([0.1, 3])
 				.collapsible(1);
-			cluster.draw(treeObj);
+			cluster.draw(angular.copy(data));
 		}
 
-		function drawLinearLayout(){
+		function drawLinearLayout(data){
 			chart.selectAll('*').remove();
-			var cluster = chart.chart("cluster.cartesian")
-				.margin({ top: 20, right: 180, bottom: 20, left: 40 })
-				.radius("_COUNT_")
-				.levelGap(200)
-				.sortable("_DESC_")
-				//.zoomable([0.1, 3])
-				.collapsible(1)
-				//.duration(200)
-				;
-			cluster.draw(treeObj);
+			var tree = chart.chart("tree.cartesian")
+				.margin({ top: 0, right: 250, bottom: 0, left: 40 })
+				.radius(3)
+				.collapsible(1);
+			tree.draw(angular.copy(data));
+
+			chart.selectAll('text')
+				.attr('text-anchor', 'start')
+				.attr('transform', 'translate(20)');
 		}
+
+		function drawText(data){
+			chart.selectAll('*').remove();
+			chart.append('text')
+				.text(data)
+				.attr('x', 960/2)
+				.attr('y', 300)
+				.attr('font-family', 'sans-serif')
+				.attr('font-size', '20px')
+				.attr('text-anchor', 'middle');
+		}
+
+		$ctrl.getData();
 
 	});
 

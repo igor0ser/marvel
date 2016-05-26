@@ -6,5 +6,5 @@
 	app.component('loadingWindow', {
 		templateUrl: '/modules/loading/loading.html'
 	});
-	console.log(123);
+
 })();
