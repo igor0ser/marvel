@@ -98,16 +98,13 @@
 
 
 	app.service('loading', function(){
-		var loadingWindow = document.getElementById('loading');
+
 		this.hide = function(){
-			loadingWindow.style.display = 'none';
+			document.getElementById('loading').style.display = 'none';
 		};
 
 		this.show = function(){
-			loadingWindow.style.display = 'block';
+			document.getElementById('loading').style.display = 'block';
 		};
 	});
 })();
-
-
-var spidy = "1009610";

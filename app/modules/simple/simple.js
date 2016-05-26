@@ -50,30 +50,46 @@
 				.data(data)
 				.enter()
 				.append('rect')
-				.attr('x', (d,i) => 10 + i * (barW + margin) )
-				.attr('y', d => chartH - linearScale(d.comics.available))
+				.attr('x', function(d, i){
+					return 10 + i * (barW + margin);
+				})
+				.attr('y', function(d){
+					return chartH - linearScale(d.comics.available);
+				})
 				.attr('width', barW)
-				.attr('height', d => linearScale(d.comics.available));
+				.attr('height', function(d){return linearScale(d.comics.available);});
 
 			chart
 				.selectAll('image')
 				.data(data)
 				.enter()
 				.append('svg:image')
-				.attr('xlink:href', d => (d.thumbnail.path + '.' + d.thumbnail.extension) )
+				.attr('xlink:href', function(d){
+					return (d.thumbnail.path + '.' + d.thumbnail.extension);
+				})
 				.attr('width', barW)
 				.attr('height', barW)
-				.attr('x', (d,i) => 10 + i * 60)
-				.attr('y', d => chartH - linearScale(d.comics.available) - 85 );
+				.attr('x', function(d, i){
+					return 10 + i * 60;
+				})
+				.attr('y', function(d){
+					return chartH - linearScale(d.comics.available) - 85;
+				});
 
 			chart
 				.selectAll('text.name')
 				.data(data)
 				.enter()
 				.append('text')
-				.text(d => d.name.substring(0, 10))
-				.attr('x', (d,i) => 10 + i * (barW + margin) + barW / 2)
-				.attr('y', d => chartH - linearScale(d.comics.available) - 20)
+				.text(function(d){
+					return d.name.substring(0, 10);
+				})
+				.attr('x', function(d, i){
+					return 10 + i * (barW + margin) + barW / 2;
+				})
+				.attr('y', function(d){
+					return chartH - linearScale(d.comics.available) - 20;
+				})
 				.attr('font-family', 'sans-serif')
 				.attr('font-size', '11px')
 				.attr('text-anchor', 'middle');
@@ -83,9 +99,15 @@
 				.data(data)
 				.enter()
 				.append('text')
-				.text(d => d.comics.available)
-				.attr('x', (d, i) => 10 + i*60 + 25)
-				.attr('y', d => chartH - linearScale(d.comics.available) - 5)
+				.text(function(d){
+					return  d.comics.available;
+				})
+				.attr('x', function(d, i){
+					return 10 + i*60 + 25;
+				})
+				.attr('y', function(d){
+					return chartH - linearScale(d.comics.available) - 5;
+				})
 				.attr('font-family', 'sans-serif')
 				.attr('font-size', '14px')
 				.attr('text-anchor', 'middle')
@@ -97,12 +119,14 @@
 			chart
 				.selectAll('rect')
 				.data(data)
-				.attr('fill', (d, i) => currentColorscale(i));
+				.attr('fill', function(d, i){
+					return currentColorscale(i);
+				});
 		};
 
 		$ctrl.getData = function(){
 			loading.show();
-			marvel.getNRandomCharacters(10, (chars) => {
+			marvel.getNRandomCharacters(10, function (chars){
 				data = chars;
 				createChart();
 				$ctrl.changeColors();
